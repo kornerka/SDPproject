@@ -1,5 +1,15 @@
 package com.sdp.smallorder.states;
 
-public interface State {
 
+import com.sdp.smallorder.product.Product;
+
+public interface State {
+	//Product product;
+	
+	
+	public int order(Product pd);
+//  public void setDeliveryMethod();
+    void next(Product pd);
+    void prev(Product pd);
+    void printStatus();
 }
