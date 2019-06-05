@@ -1,6 +1,7 @@
 package com.sdp.smallorder.states;
 
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.sdp.smallorder.product.Product;
@@ -12,15 +13,16 @@ public class OnRequestState implements State{
 		// TODO Auto-generated method stub
 //		onReqAmount = 4;
 		System.out.println("Wybierz liczbê produktów");
+		int am = 0;
 		Scanner skaner = new Scanner(System.in);
-		String am = skaner.nextLine();
-		
-		if (Integer.parseInt(am)>onReqAmount){
+		try {
+		am = skaner.nextInt();
+		if (am>onReqAmount){
 			System.out.println("Niestety, mo¿na zamówiæ jeszcze tylko "+onReqAmount+" produktów");
 			order(pd, onReqAmount);
 		}
 		else{
-			for (int i=1; i<=Integer.parseInt(am); i++) {
+			for (int i=1; i<=am; i++) {
 				
 				System.out.println("Czy chcesz dodaæ modyfikacjê? [tak/nie]");
 				Scanner sc = new Scanner(System.in);
@@ -38,11 +40,11 @@ public class OnRequestState implements State{
 			}
 		}
 		System.out.println("Przewidywany czas dostawy to 2 - 3 tygodnie");
-		System.out.println("Podaj dane do dostawy"+"\n"+"Podaj imiê: ");
+		System.out.println("Podaj dane do dostawy"+"\n");
+		System.out.println("Podaj imiê: ");
 		String firstname = skaner.nextLine();
 		System.out.println("Podaj nazwisko: ");
 		String lastname = skaner.nextLine();
-		
 		System.out.println("Ulica: ");
 		String street = skaner.nextLine();
 		System.out.println("Nr domu[/mieszkania]: ");
@@ -54,7 +56,7 @@ public class OnRequestState implements State{
 		
 		System.out.println("Dane do dostawy: "+firstname+" "+lastname+" "+street+" "+nmb+" "+city+" "+postalcode);
 		
-		onReqAmount = onReqAmount-Integer.parseInt(am);
+		onReqAmount = onReqAmount-am;
 //		System.out.println(onReqAmount);
 		if (onReqAmount!=0){
 			order(pd, onReqAmount);
@@ -63,8 +65,14 @@ public class OnRequestState implements State{
 			next(pd);
 			pd.getState().printStatus();
 		}
+		
+		}
+		catch (InputMismatchException e) {
+			System.out.println("Podaj liczbê!");
+			order(pd, onReqAmount);
+		}
 		return onReqAmount;
-	
+		
 	}
 //
 //	@Override

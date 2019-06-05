@@ -1,5 +1,6 @@
 package com.sdp.smallorder.states;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import javax.print.attribute.standard.PDLOverrideSupported;
@@ -16,44 +17,52 @@ public class AvailableState implements State{
 		System.out.println("Dostêpna liczba produktów: "+availAmount+"\n"+"Wiêksze zamówienia produkujemy na ¿¹danie");
 		System.out.println("Wybierz liczbê produktów");
 		Scanner amount = new Scanner(System.in);
-		String am = amount.nextLine();
-		if (Integer.parseInt(am)>availAmount) {
-			next(pd);
-			pd.printStatus();
-		}
-		else {
-			System.out.println("Podaj dane do dostawy"+"\n"+"Podaj imiê: ");
-			Scanner sc = new Scanner(System.in);
-			String firstname = sc.nextLine();
-			System.out.println("Podaj nazwisko: ");
-			String lastname = sc.nextLine();
-			
-			System.out.println("Ulica: ");
-			String street = sc.nextLine();
-			System.out.println("Nr domu[/mieszkania]: ");
-			String nmb = sc.nextLine();
-			System.out.println("Miasto: ");
-			String city = sc.nextLine();
-			System.out.println("Kod pocztowy [xx-xxx]: ");
-			String postalcode = sc.nextLine();
-			availAmount = availAmount-Integer.parseInt(am);
-			System.out.println("Dane do dostawy: "+firstname+" "+lastname+" "+street+" "+nmb+" "+city+" "+postalcode);
-			if (availAmount!=0) {
-				System.out.println("Mo¿na zamówiæ jeszcze jedn¹ sztukê produktu");
-				order(pd, availAmount);
-//				pd.printStatus();
-//				availAmount=1;
-				if (Integer.parseInt(am)>availAmount) {
-					next(pd);
-					pd.getState().order(pd, 4);
-				}
-			}
-			else {
+		int am = 0;
+		try {
+			am = amount.nextInt();
+			if (am>availAmount) {
 				next(pd);
 				pd.printStatus();
 			}
+			else {
+				System.out.println("Podaj dane do dostawy"+"\n"+"Podaj imiê: ");
+				Scanner sc = new Scanner(System.in);
+				String firstname = sc.nextLine();
+				System.out.println("Podaj nazwisko: ");
+				String lastname = sc.nextLine();
+				
+				System.out.println("Ulica: ");
+				String street = sc.nextLine();
+				System.out.println("Nr domu[/mieszkania]: ");
+				String nmb = sc.nextLine();
+				System.out.println("Miasto: ");
+				String city = sc.nextLine();
+				System.out.println("Kod pocztowy [xx-xxx]: ");
+				String postalcode = sc.nextLine();
+				availAmount = availAmount-am;
+				System.out.println("Dane do dostawy: "+firstname+" "+lastname+" "+street+" "+nmb+" "+city+" "+postalcode);
+				if (availAmount!=0) {
+					System.out.println("Mo¿na zamówiæ jeszcze jedn¹ sztukê produktu");
+					order(pd, availAmount);
+//				pd.printStatus();
+//				availAmount=1;
+					if (am>availAmount) {
+						next(pd);
+						pd.getState().order(pd, 4);
+					}
+				}
+				else {
+					next(pd);
+					pd.printStatus();
+				}
+			}
+			availAmount = availAmount-am;
+			
 		}
-		availAmount = availAmount-Integer.parseInt(am);
+		catch (InputMismatchException e) {
+			System.out.println("Podaj liczbê!");
+			order(pd, availAmount);
+		}
 		return availAmount;
 
 	}
