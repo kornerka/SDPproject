@@ -7,7 +7,7 @@ public interface State {
 	//Product product;
 	
 	
-	public int order(Product pd);
+	public int order(Product pd, int amount);
 //  public void setDeliveryMethod();
     void next(Product pd);
     void prev(Product pd);

@@ -6,16 +6,19 @@ import com.sdp.smallorder.product.Product;
 public class UnavailableState implements State{
 
 	@Override
-	public int order(Product pd) {
+	public int order(Product pd, int zero) {
 		// TODO Auto-generated method stub
-		System.out.println("Produkt niedostêpny. Wys³aæ powiadomienie o dostêpnoœci?");
+		System.out.println("Produkt niedostêpny. Wys³aæ powiadomienie o dostêpnoœci? [tak/nie]");
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Wpisz 'tak' lub 'nie'");
-		String decision = scanner.nextLine();
-		if (decision=="tak"){
+		String odp = scanner.nextLine();
+		if (odp.equals("tak")){
 			System.out.println("Podaj adres email");
-			Scanner email = new Scanner(System.in);
+			String email = scanner.nextLine();
 		}
+		else{
+			System.out.println("Szkoda");
+		}
+		next(pd);
 		return 0;	
 		
 	}
@@ -30,7 +33,7 @@ public class UnavailableState implements State{
 	@Override
 	public void next(Product pd) {
 		// TODO Auto-generated method stub
-		System.out.println("Produkt wycofany ze sprzeda¿y. Mo¿e kiedyœ wznowimy produkcjê;)");
+		System.out.println("Dziêkujemy!");
 	}
 
 	@Override
@@ -42,6 +45,8 @@ public class UnavailableState implements State{
 	@Override
 	public void printStatus() {
 		// TODO Auto-generated method stub
+		System.out.println("Produkt niedostêpny");
+		order(new Product(), 0);
 		
 	}
 

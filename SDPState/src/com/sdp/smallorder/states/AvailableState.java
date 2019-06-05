@@ -10,10 +10,10 @@ import com.sdp.smallorder.product.Product;
 public class AvailableState implements State{
 	
 	@Override
-	public int order(Product pd) {
+	public int order(Product pd, int availAmount) {
 		// TODO Auto-generated method stub
-		int availAmount = 2;
-		System.out.println("Dostêpna liczba produktów: "+availAmount+"/n"+"Wiêksze zamówienia produkujemy na ¿¹danie");
+//		availAmount = 2;
+		System.out.println("Dostêpna liczba produktów: "+availAmount+"\n"+"Wiêksze zamówienia produkujemy na ¿¹danie");
 		System.out.println("Wybierz liczbê produktów");
 		Scanner amount = new Scanner(System.in);
 		String am = amount.nextLine();
@@ -36,20 +36,21 @@ public class AvailableState implements State{
 			String city = sc.nextLine();
 			System.out.println("Kod pocztowy [xx-xxx]: ");
 			String postalcode = sc.nextLine();
-			
+			availAmount = availAmount-Integer.parseInt(am);
 			System.out.println("Dane do dostawy: "+firstname+" "+lastname+" "+street+" "+nmb+" "+city+" "+postalcode);
-			if (Integer.parseInt(am)==availAmount) {
-				next(pd);
-				pd.printStatus();
-			}
-			else {
+			if (availAmount!=0) {
 				System.out.println("Mo¿na zamówiæ jeszcze jedn¹ sztukê produktu");
-				pd.printStatus();
-				availAmount--;
+				order(pd, availAmount);
+//				pd.printStatus();
+//				availAmount=1;
 				if (Integer.parseInt(am)>availAmount) {
 					next(pd);
-					pd.printStatus();
+					pd.getState().order(pd, 4);
 				}
+			}
+			else {
+				next(pd);
+				pd.printStatus();
 			}
 		}
 		availAmount = availAmount-Integer.parseInt(am);
@@ -82,7 +83,7 @@ public class AvailableState implements State{
 		Scanner scanner = new Scanner(System.in);
 		String ans = scanner.nextLine();
 		if (ans.equals("tak")) {
-			order(new Product());
+			order(new Product(), 2);
 		}
 		else {
 			
